@@ -18,11 +18,14 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $token = $user->createToken('auth_token');
+        $token = $user->createToken($user->email);
 
         return response()->json([
-            'user' => new UserResource($user),
-            'token' => $token->plainTextToken,
+            'message' => 'Your account has been successfully created.',
+            'data' => [
+                'user' => new UserResource($user),
+                'token' => $token->plainTextToken,
+            ],
         ], 201);
     }
 
@@ -32,15 +35,18 @@ class AuthController extends Controller
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
-                'message' => 'Invalid credentials.'
+                'message' => 'Invalid credentials.',
             ], 401);
         }
 
-        $token = $user->createToken('auth_token');
+        $token = $user->createToken($user->email);
 
         return response()->json([
-            'user' => new UserResource($user),
-            'token' => $token->plainTextToken,
+            'message' => 'You are now logged in.',
+            'data' => [
+                'user' => new UserResource($user),
+                'token' => $token->plainTextToken,
+            ],
         ]);
     }
 
@@ -49,7 +55,7 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'message' => 'You have been logged out.'
+            'message' => 'You have been logged out.',
         ]);
     }
 
@@ -58,7 +64,7 @@ class AuthController extends Controller
         $request->user()->tokens()->delete();
 
         return response()->json([
-            'message' => 'You have been logged out from all sessions.'
+            'message' => 'You have been logged out from all devices.',
         ]);
     }
 }

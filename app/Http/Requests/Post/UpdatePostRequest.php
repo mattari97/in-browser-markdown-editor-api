@@ -11,7 +11,7 @@ class UpdatePostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,11 @@ class UpdatePostRequest extends FormRequest
      */
     public function rules(): array
     {
+        $validationCondition = $this->isMethod('PUT') ? 'required' : 'sometimes';
+
         return [
-            //
+            'title' => [$validationCondition, 'string', 'max:255'],
+            'body' => [$validationCondition, 'string', 'min:10'],
         ];
     }
 }

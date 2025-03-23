@@ -26,10 +26,10 @@ class PostFactory extends Factory
 
     private function createMarkdownBody()
     {
-        return implode('\n\n', [
+        return implode("\n\n", [
             "# {$this->faker->sentence()}",
             $this->faker->paragraph(),
-            '- ' . implode('\n-', $this->faker->sentences(3)),
+            '- ' . implode("\n- ", $this->faker->sentences(3)),
             "## {$this->faker->sentence()}",
             $this->faker->paragraph(),
             "```php\n\$value = \"Example Code\";\necho \$value;\n```",
